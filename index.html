@@ -80,7 +80,7 @@
                         socket.send(JSON.stringify(positionToSend));
                     }
 
-                    setTimeout(getPosition, 2000);
+                    setTimeout(getPosition, 500);
                 });
             } else {
                 alert("Geolocation no está soportado en este navegador");
