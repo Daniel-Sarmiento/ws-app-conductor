@@ -11,12 +11,32 @@
         #map {
             height: 500px;
         }
+
+        #info {
+            display: flex;
+            height: 40px;
+        }
+
+        #estatus {
+            margin-left: 10px;
+        }
+
+        .desconectado {
+            color: red;
+        }
+
+        .conectado {
+            color: green;
+        }
     </style>
 </head>
 
 <body>
-    <button onclick="iniciarViaje()">Iniciar viaje</button>
-    <br><br>
+    <div id="info">
+        <button onclick="iniciarViaje()">Iniciar viaje</button>
+        <p id="estatus" class="desconectado">Desconectado</p>
+    </div>
+    <br>
     <div id="map"></div>
 
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
@@ -29,6 +49,7 @@
         let socket;
         let conectado = false;
 
+        const estatusParrafo = document.getElementById("estatus");
         const markerIcon = L.icon({
             iconUrl: './mototaxi.ico', // Ruta a la imagen del marcador personalizado
             iconSize: [50, 50], // Tamaño del marcador [ancho, alto]
@@ -41,16 +62,21 @@
 
             socket.onopen = event => {
                 console.log("conectado al servidor");
+                estatusParrafo.innerText = "Conectado";
+                estatusParrafo.className = "conectado";
+                conectado = true;
+
                 Swal.fire({
                     title: "Conexión exitosa",
                     text: "conectado al servidor websocket",
                     icon: "success"
                 });
-                conectado = true;
             }
 
             socket.onclose = event => {
                 console.log("desconectado del servidor");
+                estatusParrafo.innerText = "Desconectado";
+                estatusParrafo.className = "desconectado";
 
                 setTimeout(() => {
                     conectarServidorWS();
